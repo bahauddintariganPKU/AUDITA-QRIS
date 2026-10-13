@@ -1,0 +1,6 @@
+{
+  "name": "Audita",
+  "description": "Aplikasi audit transaksi QRIS cerdas dan analisis forensik digital dengan palet pastel segar, dasbor interaktif, mode offline Room, notifikasi pintar, dan sinkronisasi awan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
