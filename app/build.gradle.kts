@@ -1,4 +1,5 @@
 import com.google.gms.googleservices.GoogleServicesPlugin.MissingGoogleServicesStrategy
+import java.util.Base64
 
 plugins {
   alias(libs.plugins.android.application)
@@ -6,6 +7,25 @@ plugins {
   alias(libs.plugins.google.devtools.ksp)
   alias(libs.plugins.secrets)
   alias(libs.plugins.google.services)
+}
+
+// Ensure debug.keystore is present before Android Studio signs the debug build
+val rootKeystore = File(rootDir, "debug.keystore")
+val rootBase64 = File(rootDir, "debug.keystore.base64")
+if (!rootKeystore.exists()) {
+  if (rootBase64.exists()) {
+    try {
+      val decoded = Base64.getDecoder().decode(rootBase64.readText().trim())
+      rootKeystore.writeBytes(decoded)
+    } catch (_: Exception) {}
+  } else {
+    val userHomeKeystore = File(System.getProperty("user.home"), ".android/debug.keystore")
+    if (userHomeKeystore.exists()) {
+      try {
+        userHomeKeystore.copyTo(rootKeystore, overwrite = true)
+      } catch (_: Exception) {}
+    }
+  }
 }
 
 android {
